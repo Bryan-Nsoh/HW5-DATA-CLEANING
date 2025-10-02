@@ -2,7 +2,7 @@
 
 ## What the original code was
 
-* Hard coded input file name data.csv
+* Hard coded input file name `data.csv`
 * All work in global scope with no functions
 * Manual loops for mean and standard deviation
 * Little documentation and no error handling
@@ -10,9 +10,10 @@
 ## What I changed
 
 * Split into functions: `load_data`, `compute_stats`, `sample_rows`, `plot_values`, `main`
+* Added short docstrings and type hints
 * Used Pandas for mean and population standard deviation (`std(ddof=0)`)
 * Added basic validation for missing file, empty data, missing column, and nonnumeric values
-* Added short docstrings and type hints
+* Replaced manual random indexing with `DataFrame.sample`
 
 ## Why this improves readability and maintainability
 
@@ -23,29 +24,31 @@
 ## How this helps a collaborator or future me
 
 * Functions can be reused and tested in isolation
-* Clear errors make debugging faster
-* The intent of each step is visible from names and docstrings
+* Clear names and docstrings show intent
+* Failures are explicit and faster to debug
 
-## Tests required by the assignment
+## How to run
 
-Run `good_python.py` with the following inputs.
+Place a CSV named `data.csv` in the same folder as `good_python.py`. The file must contain a column named `value`.
 
-1. Failure case: empty input
-   Create `data.csv` with only a header:
+Run:
 
-```
-value
-```
-
-Expected: prints `Error: The input CSV is empty.`
-
-2. Failure case: missing required column
-   Create `data.csv` with a wrong header:
-
-```
-wrong
-1
-2
+```bash
+python good_python.py
 ```
 
-Expected: prints `Error: Missing required column: 'value'`
+Output includes:
+
+* The average of the `value` column
+* The population standard deviation of that column
+* A printed sample of rows
+* A simple line plot of the values
+
+## Tests included
+
+Inline assertions are defined in `_tests()` and are executed before `main()` runs.
+
+* Success case: `compute_stats` on `[1, 2, 3, 4]` checks mean `2.5` and population stdev `1.1180`
+* Failure case: `compute_stats` on an empty `value` column must raise `ValueError`
+
+If tests pass, nothing extra is printed. If a test fails, an `AssertionError` is raised.
