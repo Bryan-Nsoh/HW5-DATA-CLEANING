@@ -115,6 +115,25 @@ def plot_values(df: pd.DataFrame, column: str = "value", title: str = "Values") 
     plt.show()
 
 
+def _tests() -> None:
+    """
+    Minimal inline tests.
+    Runs a success case and a failure case.
+    """
+    # success case
+    df_ok = pd.DataFrame({"value": [1, 2, 3, 4]})
+    m, s = compute_stats(df_ok)
+    assert abs(m - 2.5) < 1e-9
+    assert round(s, 4) == 1.1180  # population stdev
+
+    # failure case
+    try:
+        compute_stats(pd.DataFrame({"value": []}))
+        raise AssertionError("expected ValueError on empty input")
+    except ValueError:
+        pass
+
+
 def main() -> None:
     csv_path = "data.csv"
     column = "value"
@@ -138,4 +157,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    _tests()
     main()
